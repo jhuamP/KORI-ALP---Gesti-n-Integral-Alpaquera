@@ -1,0 +1,9 @@
+{
+  "name": "@kori-alp/shared",
+  "version": "0.1.0",
+  "description": "Tipos y constantes compartidas de KORI ALP",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint src/"
+  }
+}

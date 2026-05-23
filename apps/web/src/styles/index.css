@@ -1,0 +1,110 @@
+/* ─── KORI ALP — Design System Global ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
+
+:root {
+  /* Paleta principal — Oro andino + Tierra */
+  --color-gold:        #C8962A;
+  --color-gold-light:  #E8B84B;
+  --color-gold-dark:   #9A7020;
+
+  --color-earth:       #6B4226;
+  --color-earth-light: #8B5A3A;
+  --color-sky:         #2E6BA8;
+  --color-sky-light:   #4A8BC4;
+
+  /* Neutros */
+  --color-bg:          #0F0E0C;
+  --color-surface:     #1A1916;
+  --color-surface-2:   #252320;
+  --color-border:      #2E2C28;
+  --color-text:        #F2EDE4;
+  --color-text-muted:  #8A857A;
+
+  /* Semánticos */
+  --color-success:     #3DAA6E;
+  --color-warning:     #D4882A;
+  --color-error:       #C44D4D;
+  --color-info:        #3D7AB5;
+
+  /* Espaciado */
+  --spacing-xs:  4px;
+  --spacing-sm:  8px;
+  --spacing-md:  16px;
+  --spacing-lg:  24px;
+  --spacing-xl:  40px;
+  --spacing-2xl: 64px;
+
+  /* Tipografía */
+  --font-body:    'Inter', sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+
+  /* Bordes */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  /* Sombras */
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.4);
+  --shadow-glow: 0 0 20px rgba(200,150,42,0.15);
+
+  /* Transiciones */
+  --transition: 0.2s ease;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+a {
+  color: var(--color-gold-light);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover { color: var(--color-gold); }
+
+button {
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all var(--transition);
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  padding: var(--spacing-sm) var(--spacing-md);
+  width: 100%;
+  transition: border-color var(--transition);
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(200,150,42,0.15);
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-gold-dark); }

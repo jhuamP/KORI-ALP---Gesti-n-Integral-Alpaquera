@@ -1,0 +1,86 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text);
+}
+
+.field {
+  margin-bottom: var(--spacing-md);
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.btn {
+  width: 100%;
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-dark));
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: var(--spacing-lg);
+  transition: all var(--transition);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Resultado */
+.resultado { display: flex; flex-direction: column; gap: var(--spacing-md); }
+
+.metrica {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.metrica span { color: var(--color-text-muted); }
+.metrica strong { color: var(--color-text); font-size: 16px; }
+
+.destacado {
+  border: 1px solid rgba(200,150,42,0.3);
+  background: rgba(200,150,42,0.08);
+}
+
+.precioJusto {
+  color: var(--color-gold-light) !important;
+  font-size: 22px !important;
+}
+
+.nota {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-align: right;
+  margin-top: var(--spacing-sm);
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+}

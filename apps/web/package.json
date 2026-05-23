@@ -1,0 +1,26 @@
+{
+  "name": "@kori-alp/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Frontend web de KORI ALP",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.1",
+    "zustand": "^4.4.7",
+    "axios": "^1.6.5",
+    "@kori-alp/shared": "*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.10",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react": "^7.33.2"
+  }
+}

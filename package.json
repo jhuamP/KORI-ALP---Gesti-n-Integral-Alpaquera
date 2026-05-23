@@ -1,0 +1,25 @@
+{
+  "name": "kori-alp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tecnología que nace en los Andes y llega al mundo.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:backend": "npm run dev --workspace=apps/backend",
+    "dev:mobile": "npm run dev --workspace=apps/mobile"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

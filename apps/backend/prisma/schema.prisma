@@ -1,0 +1,154 @@
+// This is your Prisma schema file — https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Productor Alpaquero ────────────────────────────────────────────────────
+model Productor {
+  id          String   @id @default(uuid())
+  nombre      String
+  email       String   @unique
+  password    String
+  dni         String?  @unique
+  ruc         String?  @unique
+  comunidad   String
+  region      String   // Ej: "Puno", "Macusani", "Carabaya"
+  telefono    String?
+  activo      Boolean  @default(true)
+  creadoEn    DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  alpacas       Alpaca[]
+  registrosCosto RegistroCosto[]
+  publicaciones  Publicacion[]
+  documentos     Documento[]
+}
+
+// ─── Alpaca (Gestión del Hato) ──────────────────────────────────────────────
+model Alpaca {
+  id            String   @id @default(uuid())
+  arete         String   // Código de identificación
+  raza          Raza     @default(HUACAYA)
+  sexo          Sexo
+  edadMeses     Int
+  pesoVivoKg    Float?
+  calidadFibra  CalidadFibra?
+  estado        EstadoAlpaca @default(ACTIVO)
+  fechaNacimiento DateTime?
+  notas         String?
+  creadoEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  productorId   String
+  productor     Productor @relation(fields: [productorId], references: [id])
+}
+
+// ─── Registro de Costos ─────────────────────────────────────────────────────
+model RegistroCosto {
+  id               String   @id @default(uuid())
+  periodo          String   // Ej: "2024-Q1", "2024-Esquila"
+  numAnimales      Int
+  costoPastos      Float    @default(0)
+  costoSanidad     Float    @default(0)  // vacunas, desparasitación
+  costoManoObra    Float    @default(0)
+  costoEsquila     Float    @default(0)
+  costoFaenado     Float    @default(0)
+  costoTransporte  Float    @default(0)
+  costoOtros       Float    @default(0)
+  costoTotal       Float
+  costoPorAnimal   Float
+  pesoFibraKg      Float?
+  pesoCarneTotalKg Float?
+  precioSugeridoFibra  Float?
+  precioSugeridoCarne  Float?
+  notas            String?
+  creadoEn         DateTime @default(now())
+
+  productorId      String
+  productor        Productor @relation(fields: [productorId], references: [id])
+}
+
+// ─── Publicación en Mercado Directo ─────────────────────────────────────────
+model Publicacion {
+  id               String   @id @default(uuid())
+  titulo           String
+  descripcion      String
+  categoria        CategoriaProducto
+  cantidad         Float
+  unidad           String   // kg, unidades, fardos
+  precioSolicitado Float
+  imagenes         String[] // URLs de imágenes
+  ubicacion        String
+  activa           Boolean  @default(true)
+  creadoEn         DateTime @default(now())
+  actualizadoEn    DateTime @updatedAt
+
+  productorId      String
+  productor        Productor @relation(fields: [productorId], references: [id])
+}
+
+// ─── Documento Generado (Boletas, Guías, etc.) ──────────────────────────────
+model Documento {
+  id          String   @id @default(uuid())
+  tipo        TipoDocumento
+  contenido   Json     // Datos del documento
+  urlPdf      String?  // URL al PDF generado
+  estado      EstadoDocumento @default(BORRADOR)
+  creadoEn    DateTime @default(now())
+
+  productorId String
+  productor   Productor @relation(fields: [productorId], references: [id])
+}
+
+// ─── Enums ──────────────────────────────────────────────────────────────────
+enum Raza {
+  HUACAYA
+  SURI
+}
+
+enum Sexo {
+  MACHO
+  HEMBRA
+}
+
+enum CalidadFibra {
+  BABY_ALPACA    // < 22 micras
+  FLEECE         // 22-25 micras
+  MEDIUM_FLEECE  // 25-28 micras
+  HUARIZO        // 28-31 micras
+  GRUESA         // > 31 micras
+}
+
+enum EstadoAlpaca {
+  ACTIVO
+  SACA         // Lista para vender
+  FAENADO
+  FALLECIDO
+  BAJA
+}
+
+enum CategoriaProducto {
+  FIBRA
+  CARNE
+  CUERO
+  ABONO
+}
+
+enum TipoDocumento {
+  BOLETA
+  FACTURA
+  GUIA_REMISION
+  CERTIFICADO_SENASA
+}
+
+enum EstadoDocumento {
+  BORRADOR
+  VALIDADO
+  EMITIDO
+}
