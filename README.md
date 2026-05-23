@@ -10,7 +10,7 @@
 
 ---
 
-## 📌 ¿Qué es QHAWAY?
+## 📌 ¿Qué es KORI ALP?
 
 > *"KORI"* significa **"ORO"** en quechua — porque eso es exactamente lo que falta: que el productor pueda ver el valor real de su trabajo.
 
