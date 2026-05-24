@@ -101,7 +101,6 @@ export default function Login() {
             <div className="field">
               <div className="field-row">
                 <label htmlFor="password">Contraseña</label>
-                <a href="#" className="forgot">¿Olvidaste tu contraseña?</a>
               </div>
               <div className="input-wrapper">
                 <input

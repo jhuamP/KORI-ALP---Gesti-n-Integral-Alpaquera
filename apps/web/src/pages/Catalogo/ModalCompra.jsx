@@ -6,6 +6,7 @@ const API = '/api';
 const METODOS_PAGO = [
   { value: 'YAPE',          label: '🟣 Yape' },
   { value: 'PLIN',          label: '🟢 Plin' },
+  { value: 'WAZA',          label: '💬 Waza (918927944)' },
   { value: 'TRANSFERENCIA', label: '🏦 Transferencia Bancaria' },
   { value: 'EFECTIVO',      label: '💵 Efectivo' },
 ];
@@ -200,6 +201,23 @@ export default function ModalCompra({ producto, onClose }) {
                   </button>
                 ))}
               </div>
+              {form.metodoPago === 'WAZA' && (
+                <div style={{
+                  marginTop: '0.5rem',
+                  padding: '0.8rem 1rem',
+                  background: '#E8F5E9',
+                  color: '#2E7D32',
+                  borderRadius: '10px',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  border: '1px solid #A5D6A7'
+                }}>
+                  💬 Comunícate directamente por WhatsApp al <strong>918927944</strong> para coordinar el pago.
+                </div>
+              )}
             </div>
 
             {/* Notas */}
