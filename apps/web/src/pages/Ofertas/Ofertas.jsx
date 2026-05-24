@@ -1,7 +1,7 @@
 import React from 'react';
 import { DollarSign, FileText, PieChart as PieChartIcon } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import styles from './Costos.module.css';
+import styles from './Ofertas.module.css';
 
 const dataCostos = [
   { name: 'Alimentación', value: 45 },
@@ -11,7 +11,7 @@ const dataCostos = [
 ];
 const COLORS = ['#CD853F', '#5C715E', '#4A3320', '#DEB887'];
 
-export default function Costos() {
+export default function Ofertas() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>

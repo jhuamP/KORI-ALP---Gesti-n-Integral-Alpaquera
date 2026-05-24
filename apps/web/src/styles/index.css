@@ -2,26 +2,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
 
 :root {
-  /* Paleta principal — Oro andino + Tierra */
-  --color-gold:        #C8962A;
-  --color-gold-light:  #E8B84B;
-  --color-gold-dark:   #9A7020;
+  /* Paleta principal — Estilo Kori Alp Premium */
+  --color-gold:        #FFB800; /* Oro más brillante y llamativo */
+  --color-gold-light:  #FFD76B;
+  --color-gold-dark:   #CC9300;
 
-  --color-earth:       #6B4226;
-  --color-earth-light: #8B5A3A;
-  --color-sky:         #2E6BA8;
-  --color-sky-light:   #4A8BC4;
+  --color-earth:       #2A1D12; /* Marrón oscuro casi negro para máximo contraste */
+  --color-earth-light: #523722;
+  
+  --color-sage:        #3A503E; /* Verde más profundo */
+  --color-sage-light:  #6D9673;
 
-  /* Neutros */
-  --color-bg:          #0F0E0C;
-  --color-surface:     #1A1916;
-  --color-surface-2:   #252320;
-  --color-border:      #2E2C28;
-  --color-text:        #F2EDE4;
-  --color-text-muted:  #8A857A;
+  /* Neutros (Fondo Crema) */
+  --color-bg:          #FDFCF9; /* Crema más brillante para el fondo */
+  --color-surface:     #FFFFFF;
+  --color-surface-2:   #F3F0E6;
+  --color-border:      #E8E3D8;
+  --color-text:        #1A120B; /* Texto casi negro */
+  --color-text-muted:  #6B6054;
 
   /* Semánticos */
-  --color-success:     #3DAA6E;
+  --color-success:     #4A7C59;
   --color-warning:     #D4882A;
   --color-error:       #C44D4D;
   --color-info:        #3D7AB5;
@@ -43,10 +44,10 @@
   --radius-md: 12px;
   --radius-lg: 20px;
 
-  /* Sombras */
-  --shadow-sm:  0 2px 8px rgba(0,0,0,0.3);
-  --shadow-md:  0 4px 20px rgba(0,0,0,0.4);
-  --shadow-glow: 0 0 20px rgba(200,150,42,0.15);
+  /* Sombras minimalistas suaves */
+  --shadow-sm:  0 2px 10px rgba(74, 51, 32, 0.05);
+  --shadow-md:  0 8px 30px rgba(74, 51, 32, 0.08);
+  --shadow-glow: 0 0 20px rgba(205, 133, 63, 0.2);
 
   /* Transiciones */
   --transition: 0.2s ease;
@@ -100,7 +101,7 @@ input, select, textarea {
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--color-gold);
-  box-shadow: 0 0 0 3px rgba(200,150,42,0.15);
+  box-shadow: 0 0 0 3px rgba(205, 133, 63, 0.15);
 }
 
 /* Scrollbar personalizado */

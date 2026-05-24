@@ -1,154 +1,437 @@
-// This is your Prisma schema file — https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-// ─── Productor Alpaquero ────────────────────────────────────────────────────
+model Usuario {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  authId        String?     @unique @map("auth_id") @db.Uuid
+  email         String      @unique @db.VarChar(150)
+  passwordHash  String      @map("password_hash") @db.VarChar(255)
+  nombre        String      @db.VarChar(150)
+  rol           rol_enum    @default(PRODUCTOR)
+  idioma        String      @default("es") @db.VarChar(5)
+  activo        Boolean     @default(true)
+  creadoEn      DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  actualizadoEn DateTime    @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  comprador     Comprador[]
+  productor     Productor?
+
+  @@map("usuarios")
+}
+
+model Asociacion {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nombre        String      @db.VarChar(200)
+  ruc           String?     @unique @db.VarChar(11)
+  region        String      @db.VarChar(100)
+  distrito      String?     @db.VarChar(100)
+  comunidad     String?     @db.VarChar(150)
+  altitudMsnm   Int?        @map("altitud_msnm")
+  telefono      String?     @db.VarChar(20)
+  email         String?     @db.VarChar(150)
+  isFormalizada Boolean     @default(false) @map("is_formalizada")
+  creadoEn      DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  actualizadoEn DateTime    @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  productores   Productor[]
+
+  @@map("asociaciones")
+}
+
 model Productor {
-  id          String   @id @default(uuid())
-  nombre      String
-  email       String   @unique
-  password    String
-  dni         String?  @unique
-  ruc         String?  @unique
-  comunidad   String
-  region      String   // Ej: "Puno", "Macusani", "Carabaya"
-  telefono    String?
-  activo      Boolean  @default(true)
-  creadoEn    DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
-
-  alpacas       Alpaca[]
-  registrosCosto RegistroCosto[]
-  publicaciones  Publicacion[]
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  usuarioId      String          @unique @map("usuario_id") @db.Uuid
+  asociacionId   String?         @map("asociacion_id") @db.Uuid
+  dni            String?         @unique @db.VarChar(8)
+  ruc            String?         @unique @db.VarChar(11)
+  telefono       String?         @db.VarChar(20)
+  region         String          @db.VarChar(100)
+  distrito       String?         @db.VarChar(100)
+  comunidad      String          @db.VarChar(150)
+  altitudMsnm    Int?            @map("altitud_msnm")
+  totalAlpacas   Int             @default(0) @map("total_alpacas")
+  isFormalizado  Boolean         @default(false) @map("is_formalizado")
+  creadoEn       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  actualizadoEn  DateTime        @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  alpacas        Alpaca[]
   documentos     Documento[]
+  asociacion     Asociacion?     @relation(fields: [asociacionId], references: [id], onUpdate: NoAction)
+  usuario        Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  productos      Producto[]
+  publicaciones  Publicacion[]
+  registrosCosto RegistroCosto[]
+  transacciones  Transaccion[]
+
+  @@index([region], map: "idx_productores_region")
+  @@map("productores")
 }
 
-// ─── Alpaca (Gestión del Hato) ──────────────────────────────────────────────
+model Comprador {
+  id            String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  usuarioId     String?              @map("usuario_id") @db.Uuid
+  nombre        String               @db.VarChar(150)
+  empresa       String?              @db.VarChar(200)
+  tipo          tipo_comprador_enum
+  region        String?              @db.VarChar(100)
+  ciudad        String?              @db.VarChar(100)
+  telefono      String?              @db.VarChar(20)
+  website       String?              @db.VarChar(200)
+  isVerificado  Boolean              @default(false) @map("is_verificado")
+  rating        Decimal?             @db.Decimal(3, 2)
+  totalCompras  Int                  @default(0) @map("total_compras")
+  creadoEn      DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  actualizadoEn DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  usuario       Usuario?             @relation(fields: [usuarioId], references: [id], onUpdate: NoAction)
+  ofertas       Oferta[]
+  solicitudes   SolicitudComprador[]
+  transacciones Transaccion[]
+
+  @@map("compradores")
+}
+
 model Alpaca {
-  id            String   @id @default(uuid())
-  arete         String   // Código de identificación
-  raza          Raza     @default(HUACAYA)
-  sexo          Sexo
-  edadMeses     Int
-  pesoVivoKg    Float?
-  calidadFibra  CalidadFibra?
-  estado        EstadoAlpaca @default(ACTIVO)
-  fechaNacimiento DateTime?
-  notas         String?
-  creadoEn      DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
+  id              String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productorId     String              @map("productor_id") @db.Uuid
+  arete           String?             @db.VarChar(50)
+  raza            raza_enum           @default(HUACAYA)
+  sexo            sexo_enum
+  edadMeses       Int?                @map("edad_meses")
+  pesoVivoKg      Decimal?            @map("peso_vivo_kg") @db.Decimal(6, 2)
+  calidadFibra    calidad_fibra_enum? @map("calidad_fibra")
+  micrones        Decimal?            @db.Decimal(5, 2)
+  estado          estado_alpaca_enum  @default(ACTIVO)
+  fechaNacimiento DateTime?           @map("fecha_nacimiento") @db.Date
+  notas           String?
+  creadoEn        DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  actualizadoEn   DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  productor       Productor           @relation(fields: [productorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  esquilas        Esquila[]
+  productos       Producto[]
+  registrosCosto  RegistroCosto[]
 
-  productorId   String
-  productor     Productor @relation(fields: [productorId], references: [id])
+  @@index([productorId, estado], map: "idx_alpacas_estado")
+  @@index([productorId], map: "idx_alpacas_productor")
+  @@map("alpacas")
 }
 
-// ─── Registro de Costos ─────────────────────────────────────────────────────
+model Esquila {
+  id            String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  alpacaId      String              @map("alpaca_id") @db.Uuid
+  fechaEsquila  DateTime            @default(dbgenerated("CURRENT_DATE")) @map("fecha_esquila") @db.Date
+  pesoFibraKg   Decimal             @map("peso_fibra_kg") @db.Decimal(6, 3)
+  calidadFibra  calidad_fibra_enum? @map("calidad_fibra")
+  micrones      Decimal?            @db.Decimal(5, 2)
+  observaciones String?
+  creadoEn      DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  alpaca        Alpaca              @relation(fields: [alpacaId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  productos     Producto[]
+
+  @@index([alpacaId], map: "idx_esquilas_alpaca")
+  @@map("esquilas")
+}
+
 model RegistroCosto {
-  id               String   @id @default(uuid())
-  periodo          String   // Ej: "2024-Q1", "2024-Esquila"
-  numAnimales      Int
-  costoPastos      Float    @default(0)
-  costoSanidad     Float    @default(0)  // vacunas, desparasitación
-  costoManoObra    Float    @default(0)
-  costoEsquila     Float    @default(0)
-  costoFaenado     Float    @default(0)
-  costoTransporte  Float    @default(0)
-  costoOtros       Float    @default(0)
-  costoTotal       Float
-  costoPorAnimal   Float
-  pesoFibraKg      Float?
-  pesoCarneTotalKg Float?
-  precioSugeridoFibra  Float?
-  precioSugeridoCarne  Float?
-  notas            String?
-  creadoEn         DateTime @default(now())
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productorId   String          @map("productor_id") @db.Uuid
+  alpacaId      String?         @map("alpaca_id") @db.Uuid
+  periodo       String          @db.VarChar(30)
+  tipoCosto     tipo_costo_enum @map("tipo_costo")
+  monto         Decimal         @db.Decimal(10, 2)
+  moneda        String          @default("PEN") @db.VarChar(5)
+  numAnimales   Int?            @map("num_animales")
+  periodoMeses  Int             @default(1) @map("periodo_meses")
+  descripcion   String?
+  fechaRegistro DateTime        @default(dbgenerated("CURRENT_DATE")) @map("fecha_registro") @db.Date
+  creadoEn      DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  alpaca        Alpaca?         @relation(fields: [alpacaId], references: [id], onUpdate: NoAction)
+  productor     Productor       @relation(fields: [productorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  productorId      String
-  productor        Productor @relation(fields: [productorId], references: [id])
+  @@index([productorId, periodo], map: "idx_costo_periodo")
+  @@index([productorId], map: "idx_costo_productor")
+  @@index([productorId, tipoCosto], map: "idx_costo_productor_tipo")
+  @@map("registros_costo")
 }
 
-// ─── Publicación en Mercado Directo ─────────────────────────────────────────
+model Producto {
+  id             String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productorId    String                  @map("productor_id") @db.Uuid
+  alpacaId       String?                 @map("alpaca_id") @db.Uuid
+  esquilaId      String?                 @map("esquila_id") @db.Uuid
+  tipo           categoria_producto_enum
+  subCategoria   String?                 @map("sub_categoria") @db.VarChar(80)
+  cantidad       Decimal                 @db.Decimal(10, 3)
+  unidad         String                  @db.VarChar(20)
+  calidadGrado   String?                 @map("calidad_grado") @db.VarChar(15)
+  senasaAprobado Boolean                 @default(false) @map("senasa_aprobado")
+  fechaCosecha   DateTime?               @map("fecha_cosecha") @db.Date
+  costoPorUnidad Decimal?                @map("costo_por_unidad") @db.Decimal(10, 2)
+  precioSugerido Decimal?                @map("precio_sugerido") @db.Decimal(10, 2)
+  estado         String                  @default("DISPONIBLE") @db.VarChar(20)
+  notas          String?
+  creadoEn       DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+  actualizadoEn  DateTime                @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  alpaca         Alpaca?                 @relation(fields: [alpacaId], references: [id], onUpdate: NoAction)
+  esquila        Esquila?                @relation(fields: [esquilaId], references: [id], onUpdate: NoAction)
+  productor      Productor               @relation(fields: [productorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  publicaciones  Publicacion[]
+  transacciones  Transaccion[]
+
+  @@index([productorId], map: "idx_productos_productor")
+  @@map("productos")
+}
+
 model Publicacion {
-  id               String   @id @default(uuid())
-  titulo           String
+  id               String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productorId      String                  @map("productor_id") @db.Uuid
+  productoId       String?                 @map("producto_id") @db.Uuid
+  titulo           String                  @db.VarChar(200)
   descripcion      String
-  categoria        CategoriaProducto
-  cantidad         Float
-  unidad           String   // kg, unidades, fardos
-  precioSolicitado Float
-  imagenes         String[] // URLs de imágenes
-  ubicacion        String
-  activa           Boolean  @default(true)
-  creadoEn         DateTime @default(now())
-  actualizadoEn    DateTime @updatedAt
+  categoria        categoria_producto_enum
+  cantidad         Decimal                 @db.Decimal(10, 3)
+  unidad           String                  @db.VarChar(20)
+  precioSolicitado Decimal                 @map("precio_solicitado") @db.Decimal(10, 2)
+  precioMinimo     Decimal?                @map("precio_minimo") @db.Decimal(10, 2)
+  ubicacion        String?                 @db.VarChar(200)
+  imagenes         String[]
+  aceptaOferta     Boolean                 @default(true) @map("acepta_oferta")
+  estado           estado_publicacion_enum @default(ACTIVA)
+  vistas           Int                     @default(0)
+  creadoEn         DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+  actualizadoEn    DateTime                @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  expires_at       DateTime?               @default(dbgenerated("(now() + '90 days'::interval)")) @db.Timestamptz(6)
+  ofertas          Oferta[]
+  producto         Producto?               @relation(fields: [productoId], references: [id], onUpdate: NoAction)
+  productor        Productor               @relation(fields: [productorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  transacciones    Transaccion[]
 
-  productorId      String
-  productor        Productor @relation(fields: [productorId], references: [id])
+  @@index([productorId], map: "idx_publicaciones_productor")
+  @@map("publicaciones")
 }
 
-// ─── Documento Generado (Boletas, Guías, etc.) ──────────────────────────────
+model SolicitudComprador {
+  id               String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  compradorId      String                  @map("comprador_id") @db.Uuid
+  tipo             categoria_producto_enum
+  subCategoria     String?                 @map("sub_categoria") @db.VarChar(80)
+  cantidadNeeded   Decimal?                @map("cantidad_needed") @db.Decimal(10, 3)
+  unidad           String?                 @db.VarChar(20)
+  precioMaximo     Decimal?                @map("precio_maximo") @db.Decimal(10, 2)
+  regionPreferida  String?                 @map("region_preferida") @db.VarChar(100)
+  calidadRequerida String?                 @map("calidad_requerida") @db.VarChar(15)
+  senasaRequerido  Boolean                 @default(false) @map("senasa_requerido")
+  fechaNecesaria   DateTime?               @map("fecha_necesaria") @db.Date
+  estado           String                  @default("ABIERTA") @db.VarChar(20)
+  creadoEn         DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+  expires_at       DateTime?               @default(dbgenerated("(now() + '90 days'::interval)")) @db.Timestamptz(6)
+  comprador        Comprador               @relation(fields: [compradorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([compradorId], map: "idx_solicitudes_comprador")
+  @@map("solicitudes_comprador")
+}
+
+model Oferta {
+  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  publicacionId  String             @map("publicacion_id") @db.Uuid
+  compradorId    String             @map("comprador_id") @db.Uuid
+  precioOfertado Decimal            @map("precio_ofertado") @db.Decimal(10, 2)
+  cantidad       Decimal            @db.Decimal(10, 3)
+  mensaje        String?
+  estado         estado_oferta_enum @default(PENDIENTE)
+  respuesta      String?
+  creadoEn       DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  actualizadoEn  DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  expires_at     DateTime?          @default(dbgenerated("(now() + '7 days'::interval)")) @db.Timestamptz(6)
+  comprador      Comprador          @relation(fields: [compradorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  publicacion    Publicacion        @relation(fields: [publicacionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  transaccion    Transaccion[]
+
+  @@index([compradorId], map: "idx_ofertas_comprador")
+  @@index([publicacionId], map: "idx_ofertas_publicacion")
+  @@map("ofertas")
+}
+
+model Transaccion {
+  id              String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productorId     String               @map("productor_id") @db.Uuid
+  productoId      String               @map("producto_id") @db.Uuid
+  publicacionId   String?              @map("publicacion_id") @db.Uuid
+  ofertaId        String?              @map("oferta_id") @db.Uuid
+  compradorId     String?              @map("comprador_id") @db.Uuid
+  compradorNombre String?              @map("comprador_nombre") @db.VarChar(150)
+  tipoComprador   tipo_comprador_enum? @map("tipo_comprador")
+  cantidadVendida Decimal              @map("cantidad_vendida") @db.Decimal(10, 3)
+  precioUnitario  Decimal              @map("precio_unitario") @db.Decimal(10, 2)
+  monto_total     Decimal?             @default(dbgenerated("(cantidad_vendida * precio_unitario)")) @db.Decimal(12, 2)
+  esFormal        Boolean              @default(false) @map("es_formal")
+  metodoPago      metodo_pago_enum?    @map("metodo_pago")
+  fechaVenta      DateTime             @default(dbgenerated("CURRENT_DATE")) @map("fecha_venta") @db.Date
+  notas           String?
+  creadoEn        DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  documentos      Documento[]
+  comprador       Comprador?           @relation(fields: [compradorId], references: [id], onUpdate: NoAction)
+  oferta          Oferta?              @relation(fields: [ofertaId], references: [id], onUpdate: NoAction)
+  producto        Producto             @relation(fields: [productoId], references: [id], onUpdate: NoAction)
+  productor       Productor            @relation(fields: [productorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  publicacion     Publicacion?         @relation(fields: [publicacionId], references: [id], onUpdate: NoAction)
+
+  @@index([productorId, fechaVenta(sort: Desc)], map: "idx_transacciones_fecha")
+  @@index([productorId], map: "idx_transacciones_productor")
+  @@map("transacciones")
+}
+
 model Documento {
-  id          String   @id @default(uuid())
-  tipo        TipoDocumento
-  contenido   Json     // Datos del documento
-  urlPdf      String?  // URL al PDF generado
-  estado      EstadoDocumento @default(BORRADOR)
-  creadoEn    DateTime @default(now())
+  id            String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productorId   String                @map("productor_id") @db.Uuid
+  transaccionId String?               @map("transaccion_id") @db.Uuid
+  tipo          tipo_documento_enum
+  numero        String?               @db.VarChar(50)
+  contenido     Json
+  urlPdf        String?               @map("url_pdf") @db.VarChar(500)
+  estado        estado_documento_enum @default(BORRADOR)
+  fechaEmision  DateTime?             @map("fecha_emision") @db.Date
+  creadoEn      DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  actualizadoEn DateTime              @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  productor     Productor             @relation(fields: [productorId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  transaccion   Transaccion?          @relation(fields: [transaccionId], references: [id], onUpdate: NoAction)
+  items         ItemDocumento[]
 
-  productorId String
-  productor   Productor @relation(fields: [productorId], references: [id])
+  @@index([productorId], map: "idx_documentos_productor")
+  @@index([transaccionId], map: "idx_documentos_transaccion")
+  @@map("documentos")
 }
 
-// ─── Enums ──────────────────────────────────────────────────────────────────
-enum Raza {
-  HUACAYA
-  SURI
+model ItemDocumento {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentoId    String    @map("documento_id") @db.Uuid
+  descripcion    String    @db.VarChar(300)
+  cantidad       Decimal   @db.Decimal(10, 3)
+  unidad         String    @db.VarChar(20)
+  precioUnitario Decimal   @map("precio_unitario") @db.Decimal(10, 2)
+  subtotal       Decimal?  @default(dbgenerated("(cantidad * precio_unitario)")) @db.Decimal(12, 2)
+  creadoEn       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  documento      Documento @relation(fields: [documentoId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([documentoId], map: "idx_items_documento")
+  @@map("items_documento")
 }
 
-enum Sexo {
-  MACHO
-  HEMBRA
+model PrecioReferencia {
+  id             String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tipo           categoria_producto_enum
+  subCategoria   String                  @map("sub_categoria") @db.VarChar(80)
+  calidadGrado   String?                 @map("calidad_grado") @db.VarChar(15)
+  precioMin      Decimal                 @map("precio_min") @db.Decimal(10, 2)
+  precioMax      Decimal                 @map("precio_max") @db.Decimal(10, 2)
+  precioPromedio Decimal                 @map("precio_promedio") @db.Decimal(10, 2)
+  unidad         String                  @db.VarChar(20)
+  region         String?                 @db.VarChar(100)
+  fuente         String?                 @db.VarChar(200)
+  vigenteDesde   DateTime                @default(dbgenerated("CURRENT_DATE")) @map("vigente_desde") @db.Date
+  vigenteHasta   DateTime?               @map("vigente_hasta") @db.Date
+  creadoEn       DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([tipo, subCategoria], map: "idx_precios_tipo")
+  @@map("precios_referencia")
 }
 
-enum CalidadFibra {
-  BABY_ALPACA    // < 22 micras
-  FLEECE         // 22-25 micras
-  MEDIUM_FLEECE  // 25-28 micras
-  HUARIZO        // 28-31 micras
-  GRUESA         // > 31 micras
+enum calidad_fibra_enum {
+  BABY_ALPACA
+  FLEECE
+  MEDIUM_FLEECE
+  HUARIZO
+  GRUESA
 }
 
-enum EstadoAlpaca {
+enum categoria_producto_enum {
+  FIBRA
+  CARNE
+  CUERO
+  ABONO
+  OTRO
+}
+
+enum estado_alpaca_enum {
   ACTIVO
-  SACA         // Lista para vender
+  SACA
   FAENADO
   FALLECIDO
   BAJA
 }
 
-enum CategoriaProducto {
-  FIBRA
-  CARNE
-  CUERO
-  ABONO
+enum estado_documento_enum {
+  BORRADOR
+  VALIDADO
+  EMITIDO
+  ANULADO
 }
 
-enum TipoDocumento {
+enum estado_oferta_enum {
+  PENDIENTE
+  ACEPTADA
+  RECHAZADA
+  EXPIRADA
+}
+
+enum estado_publicacion_enum {
+  ACTIVA
+  PAUSADA
+  VENDIDA
+  VENCIDA
+  CANCELADA
+}
+
+enum metodo_pago_enum {
+  EFECTIVO
+  TRANSFERENCIA
+  YAPE
+  PLIN
+  OTRO
+}
+
+enum raza_enum {
+  HUACAYA
+  SURI
+}
+
+enum rol_enum {
+  PRODUCTOR
+  COMPRADOR
+  ADMIN
+}
+
+enum sexo_enum {
+  MACHO
+  HEMBRA
+}
+
+enum tipo_comprador_enum {
+  TEXTIL
+  GASTRONOMICO
+  INDUSTRIAL
+  INFORMAL
+  DIRECTO
+}
+
+enum tipo_costo_enum {
+  PASTOS
+  VACUNAS
+  MANO_OBRA
+  ESQUILA
+  FAENADO
+  TRANSPORTE
+  CERTIFICACION
+  OTROS
+}
+
+enum tipo_documento_enum {
   BOLETA
   FACTURA
   GUIA_REMISION
   CERTIFICADO_SENASA
-}
-
-enum EstadoDocumento {
-  BORRADOR
-  VALIDADO
-  EMITIDO
+  NOTA_VENTA
 }

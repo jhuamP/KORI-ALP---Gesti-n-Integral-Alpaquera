@@ -1,64 +1,71 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/config');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-// TODO: Reemplazar con Prisma cuando la BD esté configurada
-// const prisma = require('../../config/database');
-
-/**
- * POST /api/auth/register
- * Registro de nuevo productor alpaquero
- */
 const register = async (req, res, next) => {
   try {
-    const { nombre, email, password, comunidad, region } = req.body;
+    const { nombre, email, password, rol } = req.body; // rol = 'ADMIN' o 'COMPRADOR'
 
-    // TODO: Verificar si el email ya existe en la BD
-    // const existing = await prisma.productor.findUnique({ where: { email } });
-    // if (existing) return res.status(409).json({ error: 'El email ya está registrado' });
+    const existing = await prisma.usuario.findUnique({ where: { email } });
+    if (existing) {
+      return res.status(409).json({ error: 'El correo electrónico ya está registrado' });
+    }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
+    const dbRol = rol === 'ADMIN' ? 'ADMIN' : 'COMPRADOR';
 
-    // TODO: Guardar en la BD
-    // const productor = await prisma.productor.create({ data: { ... } });
+    const nuevoUsuario = await prisma.usuario.create({
+      data: {
+        email,
+        nombre,
+        passwordHash,
+        rol: dbRol,
+      }
+    });
 
     const token = jwt.sign(
-      { id: 'temp-id', email, nombre },
+      { id: nuevoUsuario.id, email: nuevoUsuario.email, rol: nuevoUsuario.rol },
       config.jwt.secret,
       { expiresIn: config.jwt.expiresIn }
     );
 
     res.status(201).json({
-      message: 'Productor registrado exitosamente',
+      message: 'Usuario registrado exitosamente',
       token,
-      user: { nombre, email, comunidad, region },
+      user: { id: nuevoUsuario.id, nombre: nuevoUsuario.nombre, email: nuevoUsuario.email, rol: nuevoUsuario.rol },
     });
   } catch (error) {
     next(error);
   }
 };
 
-/**
- * POST /api/auth/login
- * Inicio de sesión
- */
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // TODO: Buscar en la BD
-    // const productor = await prisma.productor.findUnique({ where: { email } });
-    // if (!productor) return res.status(401).json({ error: 'Credenciales inválidas' });
-    // const valid = await bcrypt.compare(password, productor.password);
-    // if (!valid) return res.status(401).json({ error: 'Credenciales inválidas' });
+    const usuario = await prisma.usuario.findUnique({ where: { email } });
+    if (!usuario) {
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
+
+    const valid = await bcrypt.compare(password, usuario.passwordHash);
+    if (!valid) {
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
 
     const token = jwt.sign(
-      { id: 'temp-id', email },
+      { id: usuario.id, email: usuario.email, rol: usuario.rol },
       config.jwt.secret,
       { expiresIn: config.jwt.expiresIn }
     );
 
-    res.json({ message: 'Inicio de sesión exitoso', token });
+    res.json({ 
+      message: 'Inicio de sesión exitoso', 
+      token,
+      user: { id: usuario.id, nombre: usuario.nombre, email: usuario.email, rol: usuario.rol }
+    });
   } catch (error) {
     next(error);
   }
