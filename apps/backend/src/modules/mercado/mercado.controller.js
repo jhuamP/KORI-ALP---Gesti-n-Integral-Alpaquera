@@ -4,9 +4,6 @@ const prisma = new PrismaClient();
 // ─── MAPA de subcategorías por categoría para el frontend ────────────────────
 const SUB_CATEGORIAS = {
   FIBRA:  ['Baby Alpaca', 'Fleece', 'Medium Fleece', 'Huarizo', 'Gruesa'],
-  CARNE:  ['Fresco', 'Charqui', 'Embutido'],
-  CUERO:  ['Piel entera', 'Curtido'],
-  ABONO:  ['Estiercol fresco', 'Compostado'],
 };
 
 /**
@@ -141,9 +138,17 @@ const crear = async (req, res, next) => {
     const userId = req.user.id;
 
     // Buscar el perfil de Productor ligado a este usuario
-    const productor = await prisma.productor.findUnique({ where: { usuarioId: userId } });
+    let productor = await prisma.productor.findUnique({ where: { usuarioId: userId } });
     if (!productor) {
-      return res.status(400).json({ error: 'Debes completar tu perfil de productor antes de publicar.' });
+      productor = await prisma.productor.create({
+        data: {
+          usuarioId: userId,
+          region: 'Puno',
+          comunidad: 'Comunidad Kori',
+          dni: '',
+          totalAlpacas: 0
+        }
+      });
     }
 
     const {

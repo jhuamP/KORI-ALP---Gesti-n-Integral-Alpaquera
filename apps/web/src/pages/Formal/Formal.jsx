@@ -17,7 +17,7 @@ export default function Formal() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 600 }}>
         {[
           { paso: 1, titulo: 'Obtener RUC', entidad: 'SUNAT', desc: 'Regístrate en SUNAT como persona natural o jurídica.' },
-          { paso: 2, titulo: 'Certificado Sanitario', entidad: 'SENASA', desc: 'Certifica la sanidad de tu fibra o carne para exportación.' },
+          { paso: 2, titulo: 'Certificado Sanitario', entidad: 'SENASA', desc: 'Certifica la sanidad de tu fibra para exportación.' },
           { paso: 3, titulo: 'Registro de Exportador', entidad: 'MINCETUR', desc: 'Inscríbete en el registro nacional de exportadores.' },
           { paso: 4, titulo: 'Encontrar Comprador', entidad: 'KORI ALP', desc: 'Usa el módulo Mercado para conectar con importadores.' },
           { paso: 5, titulo: 'Declaración Aduanera', entidad: 'Aduanas', desc: 'Tramita tu DAM (Declaración Aduanera de Mercancías).' },

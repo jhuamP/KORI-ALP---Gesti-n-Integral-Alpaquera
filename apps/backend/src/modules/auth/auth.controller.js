@@ -24,6 +24,26 @@ const register = async (req, res, next) => {
         nombre,
         passwordHash,
         rol: dbRol,
+        ...(dbRol === 'PRODUCTOR' ? {
+          productor: {
+            create: {
+              region: 'Puno',
+              comunidad: 'Comunidad Kori',
+              dni: '',
+              totalAlpacas: 0
+            }
+          }
+        } : {}),
+        ...(dbRol === 'COMPRADOR' ? {
+          comprador: {
+            create: {
+              nombre: nombre,
+              tipo: 'TEXTIL',
+              region: 'Arequipa',
+              isVerificado: true
+            }
+          }
+        } : {})
       }
     });
 

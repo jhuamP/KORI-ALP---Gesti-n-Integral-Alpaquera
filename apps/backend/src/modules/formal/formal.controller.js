@@ -82,7 +82,7 @@ const guiaExportacion = (req, res) => {
     message: 'Guía de exportación de fibra de alpaca',
     pasos: [
       { paso: 1, titulo: 'Obtener RUC', descripcion: 'Registrarte en SUNAT como persona natural o jurídica', entidad: 'SUNAT' },
-      { paso: 2, titulo: 'Certificación SENASA', descripcion: 'Obtener certificado sanitario de tu fibra/carne', entidad: 'SENASA' },
+      { paso: 2, titulo: 'Certificación SENASA', descripcion: 'Obtener certificado sanitario de tu fibra', entidad: 'SENASA' },
       { paso: 3, titulo: 'Registro en MINCETUR', descripcion: 'Inscribirse en el registro de exportadores', entidad: 'MINCETUR' },
       { paso: 4, titulo: 'Encontrar comprador', descripcion: 'Conectarte con importadores a través del módulo Mercado', entidad: 'KORI ALP' },
       { paso: 5, titulo: 'Declaración Aduanera', descripcion: 'Tramitar DAM (Declaración Aduanera de Mercancías)', entidad: 'SUNAT/Aduanas' },

@@ -42,7 +42,7 @@ export default function DiscoverPage() {
         <div className="hero-content">
           <h1 className="hero-title">El verdadero valor de los Andes</h1>
           <p className="hero-subtitle">
-            Conectamos la fibra y carne de alpaca de más alta calidad directamente desde las comunidades productoras hasta el mercado global. Transparencia total, trazabilidad garantizada.
+            Conectamos la fibra de alpaca de más alta calidad directamente desde las comunidades productoras hasta el mercado global. Transparencia total, trazabilidad garantizada.
           </p>
           <button className="hero-cta" onClick={() => document.getElementById('marketplace').scrollIntoView()}>
             Explorar Catálogo

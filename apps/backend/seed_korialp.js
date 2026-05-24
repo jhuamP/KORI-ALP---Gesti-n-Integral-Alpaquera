@@ -114,7 +114,7 @@ async function main() {
       data: [
         { tipo: 'FIBRA', subCategoria: 'Baby Alpaca', precioMin: 45, precioMax: 55, precioPromedio: 50, unidad: 'kg' },
         { tipo: 'FIBRA', subCategoria: 'Fleece', precioMin: 30, precioMax: 40, precioPromedio: 35, unidad: 'kg' },
-        { tipo: 'CARNE', subCategoria: 'Charqui', precioMin: 20, precioMax: 30, precioPromedio: 25, unidad: 'kg' }
+        { tipo: 'FIBRA', subCategoria: 'Huarizo', precioMin: 20, precioMax: 30, precioPromedio: 25, unidad: 'kg' }
       ]
     });
   }
@@ -144,9 +144,9 @@ async function main() {
     await prisma.publicacion.create({
       data: {
         productorId: productor.id,
-        titulo: 'Lote de Carne: Charqui Andino Secado al Sol',
-        descripcion: 'Charqui de alpaca preparado con métodos tradicionales, certificado por SENASA.',
-        categoria: 'CARNE',
+        titulo: 'Lote Secundario: Fibra Suri Canela Orgánica',
+        descripcion: 'Fibra de alpaca Suri de color canela natural, ideal para hilado artesanal.',
+        categoria: 'FIBRA',
         cantidad: 10,
         unidad: 'kg',
         precioSolicitado: 25.0,
