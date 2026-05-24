@@ -306,8 +306,27 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .registro-page { flex-direction: column; }
-  .left { width: 100%; padding: 40px 30px; }
-  .brand-image { max-width: 240px; }
-  .right { width: 100%; padding: 40px 30px; }
+  .registro-page {
+    flex-direction: column;
+    position: relative;
+    overflow: visible;
+    min-height: 100vh;
+    height: auto;
+  }
+  .left {
+    width: 100%;
+    padding: 30px 20px;
+    height: auto;
+  }
+  .brand-image {
+    max-width: 200px;
+  }
+  .right {
+    width: 100%;
+    padding: 30px 20px;
+    height: auto;
+  }
 }
+
+
+
