@@ -1,8 +1,29 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const https = require('https');
 const config = require('../../config/config');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+
+const fetchJson = (url) => {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      let data = '';
+      res.on('data', (chunk) => data += chunk);
+      res.on('end', () => {
+        try {
+          resolve({
+            ok: res.statusCode >= 200 && res.statusCode < 300,
+            statusCode: res.statusCode,
+            json: () => Promise.resolve(JSON.parse(data))
+          });
+        } catch (e) {
+          reject(e);
+        }
+      });
+    }).on('error', reject);
+  });
+};
 
 const register = async (req, res, next) => {
   try {
@@ -83,8 +104,8 @@ const login = async (req, res, next) => {
       { expiresIn: config.jwt.expiresIn }
     );
 
-    res.json({ 
-      message: 'Inicio de sesión exitoso', 
+    res.json({
+      message: 'Inicio de sesión exitoso',
       token,
       user: { id: usuario.id, nombre: usuario.nombre, email: usuario.email, rol: usuario.rol }
     });
@@ -93,18 +114,97 @@ const login = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/auth/logout
- */
+const googleLogin = async (req, res, next) => {
+  try {
+    const { googleToken, rol } = req.body;
+    if (!googleToken) {
+      return res.status(400).json({ error: 'Token de Google requerido' });
+    }
+
+    // Validar token contra el endpoint de Google
+    const verifyRes = await fetchJson(`https://oauth2.googleapis.com/tokeninfo?id_token=${googleToken}`);
+    if (!verifyRes.ok) {
+      const errData = await verifyRes.json().catch(() => ({}));
+      return res.status(401).json({ error: errData.error_description || 'Token de Google inválido' });
+    }
+
+    const payload = await verifyRes.json();
+    const { email, name } = payload;
+
+    if (!email) {
+      return res.status(400).json({ error: 'El token de Google no contiene un correo electrónico' });
+    }
+
+    let usuario = await prisma.usuario.findUnique({
+      where: { email },
+      include: { productor: true, comprador: true }
+    });
+
+    if (!usuario) {
+      // El usuario no existe, registrar cuenta nueva
+      const validRoles = ['PRODUCTOR', 'COMPRADOR', 'ADMIN'];
+      const dbRol = validRoles.includes(rol) ? rol : 'COMPRADOR';
+
+      const randomPassword = Math.random().toString(36).slice(-8);
+      const passwordHash = await bcrypt.hash(randomPassword, 10);
+
+      usuario = await prisma.usuario.create({
+        data: {
+          email,
+          nombre: name || 'Usuario Google',
+          passwordHash,
+          rol: dbRol,
+          ...(dbRol === 'PRODUCTOR' ? {
+            productor: {
+              create: {
+                region: 'Puno',
+                comunidad: 'Comunidad Kori',
+                dni: '',
+                totalAlpacas: 0
+              }
+            }
+          } : {}),
+          ...(dbRol === 'COMPRADOR' ? {
+            comprador: {
+              create: {
+                nombre: name || 'Usuario Google',
+                tipo: 'TEXTIL',
+                region: 'Arequipa',
+                isVerificado: true
+              }
+            }
+          } : {})
+        },
+        include: { productor: true, comprador: true }
+      });
+    }
+
+    // Generar token JWT local
+    const token = jwt.sign(
+      { id: usuario.id, email: usuario.email, rol: usuario.rol },
+      config.jwt.secret,
+      { expiresIn: config.jwt.expiresIn }
+    );
+
+    res.json({
+      message: 'Inicio de sesión con Google exitoso',
+      token,
+      user: {
+        id: usuario.id,
+        nombre: usuario.nombre,
+        email: usuario.email,
+        rol: usuario.rol
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const logout = (req, res) => {
-  // Con JWT stateless, el logout lo maneja el cliente eliminando el token
   res.json({ message: 'Sesión cerrada exitosamente' });
 };
 
-/**
- * GET /api/auth/create-admin
- * Ruta temporal para crear al super administrador
- */
 const createAdmin = async (req, res, next) => {
   try {
     const email = 'admin@korialp.com';
@@ -134,4 +234,4 @@ const createAdmin = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, logout, createAdmin };
+module.exports = { register, login, googleLogin, logout, createAdmin };

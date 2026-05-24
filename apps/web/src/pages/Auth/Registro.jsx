@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import './Registro.css';
 
 export default function Registro() {
   const navigate = useNavigate();
-  const { register, isLoading, error } = useAuthStore();
+  const { register, loginWithGoogle, isLoading, error } = useAuthStore();
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // Se usa 'ADMIN' internamente para Productor/Vendedor según nuestro diseño dual
   const [rol, setRol] = useState('COMPRADOR');
 
   const handleSubmit = async (e) => {
@@ -20,6 +19,27 @@ export default function Registro() {
     }
   };
 
+  const handleGoogleResponse = async (response) => {
+    const success = await loginWithGoogle(response.credential, rol);
+    if (success) {
+      navigate('/app');
+    }
+  };
+
+  useEffect(() => {
+    /* global google */
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || '1047530932596-placeholder.apps.googleusercontent.com',
+        callback: handleGoogleResponse,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById('googleBtn'),
+        { theme: 'outline', size: 'large', width: '380' }
+      );
+    }
+  }, [rol]); // Re-initialize if rol changes so the latest rol is sent in callback closure
+
   return (
     <div className="registro-page">
 
@@ -27,7 +47,6 @@ export default function Registro() {
       <div className="left">
         <div>
           <div className="logo">
-
             <span className="logo-name">kori Alp</span>
           </div>
 
@@ -141,6 +160,12 @@ export default function Registro() {
               {isLoading ? 'Registrando...' : 'Registrarme'}
             </button>
           </form>
+
+          <div className="sep"><span>o</span></div>
+
+          <div style={{ display: 'flex', justifyContent: 'center', width: '100%', minHeight: '44px' }}>
+            <div id="googleBtn"></div>
+          </div>
 
           <p className="register-row">¿Ya tienes cuenta?<Link to="/login">Inicia sesión</Link></p>
         </div>

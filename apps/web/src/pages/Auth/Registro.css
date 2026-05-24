@@ -304,6 +304,29 @@
 }
 .register-row a:hover { text-decoration: underline; }
 
+.sep {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 18px;
+  width: 100%;
+}
+
+.sep span {
+  font-size: .67rem;
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.sep::before, .sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .registro-page {

@@ -38,6 +38,18 @@ export const useAuthStore = create(
         }
       },
 
+      loginWithGoogle: async (googleToken, rol) => {
+        set({ isLoading: true, error: null });
+        try {
+          const response = await axios.post(`${API_URL}/auth/google`, { googleToken, rol });
+          set({ token: response.data.token, user: response.data.user, isLoading: false });
+          return true;
+        } catch (error) {
+          set({ error: error.response?.data?.error || 'Error al iniciar sesión con Google', isLoading: false });
+          return false;
+        }
+      },
+
       logout: () => set({ token: null, user: null }),
     }),
     {

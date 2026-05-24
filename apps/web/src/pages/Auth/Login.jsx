@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import './Login.css';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, isLoading, error } = useAuthStore();
+  const { login, loginWithGoogle, isLoading, error } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,6 +16,27 @@ export default function Login() {
       navigate('/app');
     }
   };
+
+  const handleGoogleResponse = async (response) => {
+    const success = await loginWithGoogle(response.credential);
+    if (success) {
+      navigate('/app');
+    }
+  };
+
+  useEffect(() => {
+    /* global google */
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || '1047530932596-placeholder.apps.googleusercontent.com',
+        callback: handleGoogleResponse,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById('googleBtn'),
+        { theme: 'outline', size: 'large', width: '380' }
+      );
+    }
+  }, []);
 
   return (
     <div className="login-page">
@@ -96,23 +117,21 @@ export default function Login() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary">
-              <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-              Iniciar sesión
+            <button type="submit" className="btn-primary" disabled={isLoading}>
+              {isLoading ? 'Cargando...' : <>
+                <svg viewBox="0 0 24 24" style={{ width: '14px', height: '14px', marginRight: '6px', stroke: 'white', fill: 'none', strokeWidth: '2' }}>
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+                Iniciar sesión
+              </>}
             </button>
           </form>
 
           <div className="sep"><span>o</span></div>
 
-          <button className="btn-google">
-            <svg className="g" viewBox="0 0 24 24">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05" />
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-            </svg>
-            Continuar con Google
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'center', width: '100%', minHeight: '44px' }}>
+            <div id="googleBtn"></div>
+          </div>
 
           <p className="register-row">¿No tienes cuenta?<Link to="/registro">Regístrate gratis</Link></p>
 
