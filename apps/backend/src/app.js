@@ -51,9 +51,11 @@ app.use((err, req, res, next) => {
 });
 
 // ─── Iniciar servidor ───────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`🦙 KORI ALP API corriendo en http://localhost:${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🦙 KORI ALP API corriendo en http://localhost:${PORT}`);
+    console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+  });
+}
 
 module.exports = app;

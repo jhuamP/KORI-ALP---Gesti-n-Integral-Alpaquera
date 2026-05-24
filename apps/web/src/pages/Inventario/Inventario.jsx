@@ -6,7 +6,7 @@ import {
 import { useAuthStore } from '@store/authStore';
 import styles from './Inventario.module.css';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
 // ── Configuración de calidad de fibra ────────────────────────────────────────
 const CALIDAD_CONFIG = {

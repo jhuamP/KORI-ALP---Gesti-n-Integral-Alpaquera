@@ -3,7 +3,7 @@ import { CheckCircle, XCircle, Clock, TrendingUp, TrendingDown, Minus } from 'lu
 import { useAuthStore } from '@store/authStore';
 import styles from './AprobacionPublicaciones.module.css';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
 export default function AprobacionPublicaciones() {
   const { token } = useAuthStore();

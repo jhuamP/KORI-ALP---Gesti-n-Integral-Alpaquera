@@ -6,7 +6,7 @@ import {
 import { useAuthStore } from '@store/authStore';
 import styles from './MisPublicaciones.module.css';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
 const ESTADO_CONFIG = {
   ACTIVA:    { label: 'Activa (Visible)',  icon: <CheckCircle size={14} />, cls: 'activa' },
@@ -435,11 +435,9 @@ export default function MisPublicaciones() {
                     value={form.categoria}
                     onChange={e => handleChange('categoria', e.target.value)}
                     className={styles.input}
+                    disabled
                   >
                     <option value="FIBRA">Fibra de Alpaca</option>
-                    <option value="CARNE">Carne</option>
-                    <option value="CUERO">Cuero</option>
-                    <option value="ABONO">Abono</option>
                   </select>
                 </div>
 

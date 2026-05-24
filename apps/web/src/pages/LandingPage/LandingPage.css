@@ -92,7 +92,159 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Nosotros Section */
+.nosotros-section {
+  padding: 6rem 2rem;
+  background-color: var(--color-surface-2);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nosotros-content {
+  display: flex;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nosotros-card {
+  flex: 1;
+  background-color: var(--color-surface);
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nosotros-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.nosotros-card h3 {
+  font-size: 1.8rem;
+  color: var(--color-earth);
+  margin-bottom: 1.2rem;
+}
+
+.nosotros-card p {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+/* Impacto Social Section */
+.impacto-section {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.impacto-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.impacto-item {
+  text-align: center;
+  background-color: var(--color-surface);
+  padding: 3rem 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  transition: transform 0.3s ease;
+}
+
+.impacto-item:hover {
+  transform: translateY(-5px);
+}
+
+.impacto-num {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--color-gold-dark);
+  font-family: var(--font-heading);
+  margin-bottom: 1rem;
+}
+
+.impacto-item h4 {
+  font-size: 1.3rem;
+  color: var(--color-earth);
+  margin-bottom: 0.8rem;
+}
+
+.impacto-item p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Landing Footer */
+.landing-footer {
+  padding: 3rem 2rem;
+  text-align: center;
+  background-color: var(--color-earth);
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.landing-footer p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive Mobile Rules */
 @media (max-width: 768px) {
-  .hero-title { font-size: 2.5rem; }
-  .products-grid { grid-template-columns: 1fr; }
+  .discover-hero {
+    height: 70vh;
+    padding: 0 1rem;
+  }
+
+  .hero-title {
+    font-size: 2.3rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-cta {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+  }
+
+  .marketplace-section,
+  .nosotros-section,
+  .impacto-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .nosotros-content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .nosotros-card {
+    padding: 2rem;
+  }
+
+  .impacto-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .impacto-item {
+    padding: 2rem 1.5rem;
+  }
 }

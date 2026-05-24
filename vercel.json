@@ -1,6 +1,16 @@
 {
   "version": 2,
-  "buildCommand": "npx turbo run build --filter=@kori-alp/web",
+  "buildCommand": "npx prisma generate --schema=apps/backend/prisma/schema.prisma && npx turbo run build --filter=@kori-alp/web",
   "outputDirectory": "apps/web/dist",
-  "installCommand": "npm install --production=false --legacy-peer-deps"
+  "installCommand": "npm install --production=false --legacy-peer-deps",
+  "env": {
+    "DATABASE_URL": "postgresql://postgres.anqexrydloawbuwvoeyd:KoriAlp2024Secure%21@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true",
+    "JWT_SECRET": "KoriAlp_2024_Super_Secret_Key_For_JWT_Auth",
+    "JWT_EXPIRES_IN": "7d",
+    "NODE_ENV": "production"
+  },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index.js" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ]
 }

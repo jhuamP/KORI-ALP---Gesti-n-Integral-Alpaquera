@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FileText, Download, CheckCircle, Clock, XCircle, Search } from 'lucide-react';
 import { useAuthStore } from '@store/authStore';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
 export default function MisInversiones() {
   const { token } = useAuthStore();

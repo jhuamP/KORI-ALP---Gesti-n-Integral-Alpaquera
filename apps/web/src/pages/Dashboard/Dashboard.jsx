@@ -5,7 +5,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recha
 import { useAuthStore } from '@store/authStore';
 import styles from './Dashboard.module.css';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 const COLORS = ['#4A3320', '#CD853F', '#8B5A2B', '#DEB887'];
 
 export default function Dashboard() {

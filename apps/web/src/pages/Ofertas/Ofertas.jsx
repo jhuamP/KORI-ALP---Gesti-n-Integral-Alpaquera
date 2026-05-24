@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import styles from './Ofertas.module.css';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 const COLORS = ['#CD853F', '#5C715E', '#4A3320', '#DEB887', '#9C27B0', '#607D8B'];
 
 export default function Ofertas() {
@@ -17,10 +17,8 @@ export default function Ofertas() {
     costoSanidad: 800,
     costoManoObra: 4000,
     costoEsquila: 500,
-    costoFaenado: 0,
     costoTransporte: 300,
     pesoFibraKg: 2.5,
-    pesoCarneLote: 0,
   });
 
   // Estado para los resultados
@@ -67,7 +65,6 @@ export default function Ofertas() {
     { name: 'Sanidad', value: params.costoSanidad },
     { name: 'Mano de Obra', value: params.costoManoObra },
     { name: 'Esquila', value: params.costoEsquila },
-    { name: 'Faenado', value: params.costoFaenado },
     { name: 'Transporte', value: params.costoTransporte },
   ].filter(d => d.value > 0);
 
@@ -126,13 +123,9 @@ export default function Ofertas() {
                 </div>
               </div>
               <div className={styles.formRow}>
-                <div className={styles.formGroup}>
+                <div className={styles.formGroup} style={{ flex: '1 1 100%' }}>
                   <label>Transporte</label>
                   <input type="number" name="costoTransporte" value={params.costoTransporte} onChange={handleChange} className={styles.input} />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>Costo Faenado (Opcional)</label>
-                  <input type="number" name="costoFaenado" value={params.costoFaenado} onChange={handleChange} className={styles.input} />
                 </div>
               </div>
             </div>

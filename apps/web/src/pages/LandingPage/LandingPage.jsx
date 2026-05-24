@@ -63,9 +63,9 @@ export default function LandingPage() {
         <div className="hero-content">
           <h1 className="hero-title">El verdadero valor de los Andes</h1>
           <p className="hero-subtitle">
-            Conectamos la fibra y carne de alpaca de más alta calidad directamente desde las comunidades productoras hasta el mercado global. Transparencia total, trazabilidad garantizada.
+            Conectamos la fibra de alpaca de más alta calidad directamente desde las comunidades productoras hasta el mercado global. Transparencia total, trazabilidad garantizada.
           </p>
-          <button className="hero-cta" onClick={() => document.getElementById('marketplace').scrollIntoView()}>
+          <button className="hero-cta" onClick={() => document.getElementById('marketplace').scrollIntoView({ behavior: 'smooth' })}>
             Explorar Catálogo
           </button>
         </div>
@@ -74,8 +74,8 @@ export default function LandingPage() {
       {/* Marketplace Section */}
       <section id="marketplace" className="marketplace-section">
         <div className="section-header">
-          <h2>Lotes Disponibles para Exportación</h2>
-          <p>Seleccionados bajo los más altos estándares de calidad.</p>
+          <h2>Lotes de Fibra Disponibles</h2>
+          <p>Seleccionados bajo los más altos estándares de calidad alpaquera.</p>
         </div>
         
         <div className="products-grid">
@@ -85,13 +85,64 @@ export default function LandingPage() {
               product={product} 
               onViewTraceability={() => navigate(`/trazabilidad/${product.id}`)}
               onBuy={() => {
-                const mensaje = encodeURIComponent(`Hola Kori Alp 🦙, estoy interesado en adquirir el lote: ${product.title} (${product.id}) publicado a ${product.price}. ¿Podemos coordinar el pago y envío?`);
+                const mensaje = encodeURIComponent(`Hola Kori Alp 🦙, estoy interesado en adquirir el lote de fibra: ${product.title} (${product.id}) publicado a ${product.price}. ¿Podemos coordinar el pago y envío?`);
                 window.open(`https://wa.me/51999999999?text=${mensaje}`, '_blank');
               }}
             />
           ))}
         </div>
       </section>
+
+      {/* Nosotros Section */}
+      <section id="nosotros" className="nosotros-section">
+        <div className="section-header">
+          <h2>Nuestra Historia y Misión</h2>
+          <p>Preservando la tradición alpaquera y el comercio justo.</p>
+        </div>
+        <div className="nosotros-content">
+          <div className="nosotros-card">
+            <h3>Orígenes Ancestrales</h3>
+            <p>
+              Trabajamos de la mano con comunidades de Puno, Cusco y Arequipa, donde la crianza y esquila de alpacas es un arte heredado por generaciones. Preservamos las técnicas ancestrales respetando al animal y al medio ambiente.
+            </p>
+          </div>
+          <div className="nosotros-card">
+            <h3>Certificación de Origen</h3>
+            <p>
+              Cada lote de fibra está respaldado por tecnología que garantiza su procedencia exacta, altitud de pastoreo, micraje preciso y el bienestar de los productores altoandinos.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Impacto Social Section */}
+      <section id="impacto" className="impacto-section">
+        <div className="section-header">
+          <h2>Impacto Social y Sostenible</h2>
+          <p>Cada compra apoya directamente a las familias de los criadores.</p>
+        </div>
+        <div className="impacto-grid">
+          <div className="impacto-item">
+            <div className="impacto-num">100%</div>
+            <h4>Trato Directo</h4>
+            <p>Sin intermediarios comerciales. El 100% de la venta va directo a las asociaciones.</p>
+          </div>
+          <div className="impacto-item">
+            <div className="impacto-num">+45%</div>
+            <h4>Ingresos Justos</h4>
+            <p>Garantizamos precios superiores al mercado local gracias a la certificación de calidad.</p>
+          </div>
+          <div className="impacto-item">
+            <div className="impacto-num">Eco</div>
+            <h4>Huella Cero</h4>
+            <p>Procesos ecológicos y pastoreo natural que respeta los bofedales altoandinos.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer className="landing-footer">
+        <p>© 2026 Kori Alp. Tecnología que nace en los Andes y llega al mundo.</p>
+      </footer>
     </div>
   );
 }

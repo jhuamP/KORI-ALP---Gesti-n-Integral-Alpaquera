@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, ShoppingBag, CheckCircle, Phone, User, CreditCard, MessageSquare } from 'lucide-react';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
 const METODOS_PAGO = [
   { value: 'YAPE',          label: '🟣 Yape' },

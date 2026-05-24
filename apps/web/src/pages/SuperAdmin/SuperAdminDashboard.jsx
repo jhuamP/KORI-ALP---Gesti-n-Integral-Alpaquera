@@ -3,7 +3,7 @@ import { Users, Store, Package, ShoppingBag, TrendingUp, CheckCircle, Clock } fr
 import { useAuthStore } from '@store/authStore';
 import styles from './SuperAdminDashboard.module.css';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
 export default function SuperAdminDashboard() {
   const { token } = useAuthStore();

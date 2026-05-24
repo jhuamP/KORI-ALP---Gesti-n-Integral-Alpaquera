@@ -15,7 +15,7 @@ export default function Usuarios() {
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-      const response = await axios.get('http://localhost:3000/api/admin/usuarios', {
+      const response = await axios.get('/api/admin/usuarios', {
         headers: { Authorization: `Bearer ${token}` }
       });
       const dataArray = response.data.data || response.data || [];
@@ -44,7 +44,7 @@ export default function Usuarios() {
 
   const toggleStatus = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/api/admin/usuarios/${id}/toggle-activo`, {}, {
+      await axios.patch(`/api/admin/usuarios/${id}/toggle-activo`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Actualizar localmente para no hacer refetch

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ModalCompra from './ModalCompra';
 
-const API = 'http://localhost:3000/api';
+const API = '/api';
 
-const CATEGORIAS = ['TODOS', 'FIBRA', 'CARNE', 'CUERO', 'ABONO'];
+const CATEGORIAS = ['TODOS', 'FIBRA'];
 
 const BADGE_COLORES = {
   FIBRA:  { bg: '#E8F5E9', color: '#2E7D32' },
