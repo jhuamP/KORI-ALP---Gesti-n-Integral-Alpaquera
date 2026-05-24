@@ -11,4 +11,7 @@ router.post('/login', authController.login);
 // POST /api/auth/logout — Cerrar sesión
 router.post('/logout', authController.logout);
 
+// GET /api/auth/create-admin — Crear super admin (Temporal)
+router.get('/create-admin', authController.createAdmin);
+
 module.exports = router;

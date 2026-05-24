@@ -339,6 +339,22 @@ model PrecioReferencia {
   @@map("precios_referencia")
 }
 
+model SolicitudCompra {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  publicacionId  String    @map("publicacion_id") @db.Uuid
+  nombreComprador String   @map("nombre_comprador") @db.VarChar(150)
+  telefono       String    @db.VarChar(30)
+  email          String?   @db.VarChar(150)
+  metodoPago     String    @map("metodo_pago") @db.VarChar(30)
+  cantidadSolicitada Decimal? @map("cantidad_solicitada") @db.Decimal(10, 3)
+  notas          String?
+  estado         String    @default("PENDIENTE") @db.VarChar(30)
+  creadoEn       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([publicacionId], map: "idx_solicitud_compra_pub")
+  @@map("solicitudes_compra")
+}
+
 enum calidad_fibra_enum {
   BABY_ALPACA
   FLEECE

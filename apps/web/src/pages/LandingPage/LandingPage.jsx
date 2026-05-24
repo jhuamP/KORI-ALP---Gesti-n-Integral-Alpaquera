@@ -16,7 +16,7 @@ export default function LandingPage() {
       grade: 'Baby Alpaca',
       origin: 'Macusani, Puno (4,300 msnm)',
       certifications: ['SENASA', 'Fibra Orgánica'],
-      image: 'https://images.unsplash.com/photo-1589136777351-fdc9c9cb1669?q=80&w=1000&auto=format&fit=crop',
+      image: '/images/alpaca-1.jpeg',
       price: '$28.00 / kg'
     },
     {
@@ -27,7 +27,7 @@ export default function LandingPage() {
       grade: 'Suri Fina',
       origin: 'Cusco (3,900 msnm)',
       certifications: ['Fair Trade'],
-      image: 'https://images.unsplash.com/photo-1596781285272-9720562e316a?q=80&w=1000&auto=format&fit=crop',
+      image: '/images/alpaca-2.jpeg',
       price: '$22.50 / kg'
     },
     {
@@ -38,7 +38,7 @@ export default function LandingPage() {
       grade: 'Fleece',
       origin: 'Arequipa (4,000 msnm)',
       certifications: ['SENASA'],
-      image: 'https://images.unsplash.com/photo-1542152862-243e8bb8ea07?q=80&w=1000&auto=format&fit=crop',
+      image: '/images/alpaca-3.jpeg',
       price: '$18.00 / kg'
     },
     {
@@ -49,7 +49,7 @@ export default function LandingPage() {
       grade: 'Royal Alpaca',
       origin: 'Macusani, Puno (4,500 msnm)',
       certifications: ['Comercio Justo', 'Orgánica'],
-      image: 'https://images.unsplash.com/photo-1589136777351-fdc9c9cb1669?q=80&w=1000&auto=format&fit=crop',
+      image: '/images/alpaca-4.jpeg',
       price: '$45.00 / kg'
     }
   ];

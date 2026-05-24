@@ -1,0 +1,191 @@
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  color: var(--color-brown-dark);
+}
+
+.header p {
+  color: var(--color-gray-dark);
+}
+
+.notificationWrapper {
+  position: relative;
+}
+
+.notifBtn {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 0.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-brown-dark);
+  transition: all 0.2s ease;
+}
+
+.notifBtn:hover {
+  background: var(--color-gold-light);
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: red;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.notifDropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 300px;
+  padding: 1rem;
+  z-index: 100;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.notifDropdown h4 {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.notifItem {
+  padding: 0.8rem;
+  border-radius: 6px;
+  background: var(--color-bg-light);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--color-gold-dark);
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tab {
+  padding: 0.8rem 1.5rem;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--color-gray-dark);
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  border-color: var(--color-gold-dark);
+}
+
+.activeTab {
+  padding: 0.8rem 1.5rem;
+  background: var(--color-brown-dark);
+  border: 1px solid var(--color-brown-dark);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: white;
+}
+
+.tableContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background: var(--color-bg-light);
+  padding: 1.2rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-brown-dark);
+  border-bottom: 2px solid rgba(0,0,0,0.05);
+}
+
+.table td {
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  color: var(--color-text);
+}
+
+.fwBold {
+  font-weight: 600;
+}
+
+.roleBadge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.roleBadge.productor {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.roleBadge.comprador {
+  background: #E3F2FD;
+  color: #1565C0;
+}
+
+.roleBadge.admin {
+  background: #FFF3E0;
+  color: #E65100;
+}
+
+.statusActive {
+  color: #2E7D32;
+  font-weight: 500;
+}
+
+.statusInactive {
+  color: #C62828;
+  font-weight: 500;
+}
+
+.empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-gray-dark);
+}
+
+.loading {
+  padding: 3rem;
+  text-align: center;
+  color: var(--color-gold-dark);
+  font-weight: bold;
+}

@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const register = async (req, res, next) => {
   try {
-    const { nombre, email, password, rol } = req.body; // rol = 'ADMIN' o 'COMPRADOR'
+    const { nombre, email, password, rol } = req.body; // rol = 'PRODUCTOR', 'COMPRADOR' o 'ADMIN'
 
     const existing = await prisma.usuario.findUnique({ where: { email } });
     if (existing) {
@@ -14,7 +14,9 @@ const register = async (req, res, next) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const dbRol = rol === 'ADMIN' ? 'ADMIN' : 'COMPRADOR';
+    // Permitir los 3 roles válidos
+    const validRoles = ['PRODUCTOR', 'COMPRADOR', 'ADMIN'];
+    const dbRol = validRoles.includes(rol) ? rol : 'COMPRADOR';
 
     const nuevoUsuario = await prisma.usuario.create({
       data: {
@@ -79,4 +81,37 @@ const logout = (req, res) => {
   res.json({ message: 'Sesión cerrada exitosamente' });
 };
 
-module.exports = { register, login, logout };
+/**
+ * GET /api/auth/create-admin
+ * Ruta temporal para crear al super administrador
+ */
+const createAdmin = async (req, res, next) => {
+  try {
+    const email = 'admin@korialp.com';
+    const password = 'admin';
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    let admin = await prisma.usuario.findUnique({ where: { email } });
+    if (admin) {
+      admin = await prisma.usuario.update({
+        where: { email },
+        data: { passwordHash, rol: 'ADMIN' }
+      });
+      return res.json({ message: 'Admin actualizado exitosamente', email });
+    }
+
+    admin = await prisma.usuario.create({
+      data: {
+        email,
+        nombre: 'Super Administrador',
+        passwordHash,
+        rol: 'ADMIN'
+      }
+    });
+    return res.json({ message: 'Admin creado exitosamente', email });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, logout, createAdmin };

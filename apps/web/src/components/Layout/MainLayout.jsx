@@ -1,13 +1,20 @@
 import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingCart, FileText, LogOut, Package, Megaphone, Target } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, FileText, LogOut, Package, Megaphone, Target, Store, CheckSquare, Users } from 'lucide-react';
 import { useAuthStore } from '@store/authStore';
 import styles from './MainLayout.module.css';
 
-const adminNavItems = [
-  { path: '/app',             icon: <LayoutDashboard size={20} />, label: 'Dashboard Admin'  },
-  { path: '/app/ofertas',     icon: <Megaphone size={20} />,       label: 'Crear Ofertas' },
-  { path: '/app/inventario',  icon: <Package size={20} />,         label: 'Inventario de Lotes' },
+const sellerNavItems = [
+  { path: '/app',                    icon: <LayoutDashboard size={20} />, label: 'Mi Panel'           },
+  { path: '/app/publicaciones',      icon: <Store size={20} />,          label: 'Mis Publicaciones'  },
+  { path: '/app/inventario',         icon: <Package size={20} />,        label: 'Mis Alpacas'        },
+  { path: '/app/ofertas',            icon: <Megaphone size={20} />,      label: 'Costos'             },
+];
+
+const superAdminNavItems = [
+  { path: '/app/superadmin',    icon: <LayoutDashboard size={20} />, label: 'Panel Principal'       },
+  { path: '/app/usuarios',      icon: <Users size={20} />,           label: 'Gestión de Usuarios'   },
+  { path: '/app/aprobaciones',  icon: <CheckSquare size={20} />,    label: 'Aprobar Publicaciones' },
 ];
 
 const buyerNavItems = [
@@ -25,7 +32,13 @@ export default function MainLayout() {
     navigate('/login');
   };
 
-  const navItems = user?.rol === 'ADMIN' ? adminNavItems : buyerNavItems;
+  const getNavItems = () => {
+    if (user?.rol === 'ADMIN') return superAdminNavItems;
+    if (user?.rol === 'PRODUCTOR') return sellerNavItems;
+    return buyerNavItems;
+  };
+
+  const navItems = getNavItems();
 
   return (
     <div className={styles.layout}>
@@ -61,7 +74,9 @@ export default function MainLayout() {
             />
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span className={styles.userName}>{user?.nombre || 'Usuario'}</span>
-              <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>{user?.rol === 'ADMIN' ? 'Admin' : 'Inversionista'}</span>
+              <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>
+                {user?.rol === 'ADMIN' ? 'Súper Admin' : user?.rol === 'PRODUCTOR' ? 'Productor' : 'Inversionista'}
+              </span>
             </div>
           </div>
           <button onClick={handleLogout} className={styles.logoutBtn}>

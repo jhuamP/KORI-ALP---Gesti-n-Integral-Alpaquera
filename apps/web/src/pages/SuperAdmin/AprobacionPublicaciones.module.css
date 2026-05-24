@@ -1,0 +1,222 @@
+/* ── AprobacionPublicaciones.module.css ── */
+.page { padding: 2rem; max-width: 1100px; margin: 0 auto; }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+.title   { font-size: 2rem; color: var(--color-brown-dark); margin: 0; }
+.subtitle { color: #888; font-size: 0.95rem; margin: 0.3rem 0 0; max-width: 600px; }
+
+.badge {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: #FFF3E0; color: #E65100;
+  padding: 0.6rem 1.2rem; border-radius: 20px;
+  font-weight: 700; font-size: 0.9rem; white-space: nowrap;
+}
+
+/* Loading & empty */
+.loadingWrap { text-align: center; padding: 4rem; }
+.spinner {
+  width: 36px; height: 36px; border: 3px solid #f0f0f0;
+  border-top-color: var(--color-brown-dark); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty { text-align: center; padding: 4rem 2rem; background: white; border-radius: 16px; border: 2px dashed #e0e0e0; }
+.empty h3 { color: #888; margin: 1rem 0 0.5rem; }
+
+/* Cards lista */
+.list  { display: flex; flex-direction: column; gap: 1.5rem; }
+.card  {
+  background: white; border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+  border: 1px solid rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+
+.cardMain {
+  display: flex;
+  gap: 0;
+}
+.cardInfo {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.vendedorTag {
+  font-size: 0.82rem;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.vendedorTag strong { color: #555; }
+.vendedorTag span   { color: #bbb; }
+
+.cardTitle { font-size: 1.2rem; font-weight: 700; color: var(--color-brown-dark); margin: 0; }
+.cardDesc  { color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0; }
+
+.detalles {
+  display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem;
+  font-size: 0.87rem; color: #666;
+}
+.detalles strong { color: #333; }
+
+/* ── Comparativa de precios ──────────────────────────────────────────────── */
+.precioComparativa {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: #FAFAFA;
+  border: 1.5px solid #F0E6D3;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.precioCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.precioLabel {
+  font-size: 0.72rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.precioValorGrande {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #4A3320;
+}
+
+.precioUnidad {
+  font-size: 0.72rem;
+  color: #bbb;
+}
+
+.precioFuente {
+  font-size: 0.7rem;
+  color: #ccc;
+  font-style: italic;
+}
+
+.precioVs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  background: #F0E6D3;
+  color: #A0856A;
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.precioRango {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.88rem;
+  color: #555;
+}
+
+.precioRangoCentro {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #2E7D32;
+}
+
+/* Badge de evaluación */
+.evaluacionBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  border: 1.5px solid;
+  font-size: 0.82rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+/* Campo de motivo */
+.motivoBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.motivoLabel {
+  font-size: 0.78rem;
+  color: #aaa;
+  font-weight: 600;
+}
+.motivoInput {
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+.motivoInput:focus { border-color: #C62828; }
+
+/* Panel de acciones */
+.actionsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  border-left: 1px solid #f0f0f0;
+  justify-content: center;
+  background: #FAFAFA;
+  min-width: 160px;
+}
+
+.approveBtn {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.85rem 1.2rem;
+  background: #2E7D32; color: white;
+  border: none; border-radius: 10px;
+  font-weight: 700; cursor: pointer; font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+.approveBtn:hover { opacity: 0.85; }
+
+.rejectBtn {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.85rem 1.2rem;
+  background: white; color: #C62828;
+  border: 2px solid #C62828; border-radius: 10px;
+  font-weight: 700; cursor: pointer; font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.rejectBtn:hover { background: #FFEBEE; }
+
+/* Toast */
+.toast {
+  position: fixed; top: 1.5rem; right: 1.5rem;
+  padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600;
+  z-index: 2000; animation: slideIn 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.toast.success { background: #2E7D32; color: white; }
+.toast.error   { background: #C62828; color: white; }
+@keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }

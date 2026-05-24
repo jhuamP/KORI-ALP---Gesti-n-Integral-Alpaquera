@@ -22,6 +22,14 @@ import BuyerDashboard from '@pages/Dashboard/BuyerDashboard';
 import Catalogo from '@pages/Catalogo/Catalogo';
 import MisInversiones from '@pages/MisInversiones/MisInversiones';
 
+// ─── Páginas del Super Administrador ───
+import SuperAdminDashboard from '@pages/SuperAdmin/SuperAdminDashboard';
+import Usuarios from '@pages/SuperAdmin/Usuarios';
+import AprobacionPublicaciones from '@pages/SuperAdmin/AprobacionPublicaciones';
+
+// ─── Páginas del Vendedor/Productor ───
+import MisPublicaciones from '@pages/Vendedor/MisPublicaciones';
+
 // ─── Otros ───
 import NotFound from '@pages/NotFound';
 import { useAuthStore } from '@store/authStore';
@@ -42,7 +50,9 @@ const PrivateRoute = ({ children }) => {
  */
 const DashboardSwitcher = () => {
   const { user } = useAuthStore();
-  return user?.rol === 'ADMIN' ? <Dashboard /> : <BuyerDashboard />;
+  if (user?.rol === 'ADMIN') return <SuperAdminDashboard />;
+  if (user?.rol === 'PRODUCTOR') return <Dashboard />;
+  return <BuyerDashboard />;
 };
 
 function App() {
@@ -61,13 +71,19 @@ function App() {
         <Route path="/app" element={<PrivateRoute><MainLayout /></PrivateRoute>}>
           <Route index element={<DashboardSwitcher />} />
           
-          {/* Rutas del Administrador */}
+          {/* Rutas del Productor / Vendedor */}
           <Route path="ofertas" element={<Ofertas />} />
           <Route path="inventario" element={<Inventario />} />
+          <Route path="publicaciones" element={<MisPublicaciones />} />
           
           {/* Rutas del Comprador */}
           <Route path="catalogo" element={<Catalogo />} />
           <Route path="inversiones" element={<MisInversiones />} />
+
+          {/* Rutas del Súper Administrador */}
+          <Route path="superadmin" element={<SuperAdminDashboard />} />
+          <Route path="usuarios" element={<Usuarios />} />
+          <Route path="aprobaciones" element={<AprobacionPublicaciones />} />
         </Route>
 
         {/* ─── 404 ─── */}

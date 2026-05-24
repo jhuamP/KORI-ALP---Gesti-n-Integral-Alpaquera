@@ -1,0 +1,5 @@
+Este archivo mantiene la carpeta abierta para que puedas colocar tus imágenes:
+alpaca-1.jpg
+alpaca-2.jpg
+alpaca-3.jpg
+alpaca-4.jpg

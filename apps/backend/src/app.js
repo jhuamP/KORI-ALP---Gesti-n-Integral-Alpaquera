@@ -9,6 +9,7 @@ const alpacasRoutes = require('./modules/alpacas/alpacas.routes');
 const costosRoutes = require('./modules/costos/costos.routes');
 const mercadoRoutes = require('./modules/mercado/mercado.routes');
 const formalRoutes = require('./modules/formal/formal.routes');
+const adminRoutes = require('./modules/admin/admin.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +25,7 @@ app.use('/api/alpacas', alpacasRoutes);
 app.use('/api/costos', costosRoutes);
 app.use('/api/mercado', mercadoRoutes);
 app.use('/api/formal', formalRoutes);
+app.use('/api/admin', adminRoutes);
 
 // ─── Health check ───────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {

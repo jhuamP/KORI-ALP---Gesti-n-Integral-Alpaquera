@@ -1,0 +1,253 @@
+/* ── MisPublicaciones.module.css ── */
+.page { padding: 2rem; max-width: 1100px; margin: 0 auto; }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+.title { font-size: 2rem; color: var(--color-brown-dark); margin: 0; }
+.subtitle { color: #888; font-size: 0.95rem; margin: 0.3rem 0 0; max-width: 600px; }
+
+.primaryBtn {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: var(--color-brown-dark);
+  color: white; border: none; padding: 0.8rem 1.5rem;
+  border-radius: 10px; font-weight: 600; cursor: pointer;
+  font-size: 0.95rem; white-space: nowrap;
+  transition: opacity 0.2s;
+}
+.primaryBtn:hover { opacity: 0.85; }
+
+/* Stats */
+.statsRow { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2rem; }
+.statChip {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.45rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+}
+.statChip span { font-size: 1.1rem; font-weight: 700; }
+.statChip.activa  { background: #E8F5E9; color: #2E7D32; }
+.statChip.pausada { background: #FFF8E1; color: #F57F17; }
+.statChip.cancelada { background: #FFEBEE; color: #C62828; }
+.statChip.vendida { background: #E3F2FD; color: #1565C0; }
+
+/* Cards */
+.cards { display: flex; flex-direction: column; gap: 1rem; }
+.card {
+  background: white; border-radius: 14px; padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07); border: 1px solid rgba(0,0,0,0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+
+.cardTop { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+.cardTitle { font-size: 1.15rem; font-weight: 700; color: var(--color-brown-dark); margin: 0 0 0.3rem; }
+.cardDesc { color: #888; font-size: 0.9rem; margin: 0; max-width: 600px; }
+
+.estadoBadge {
+  display: flex; align-items: center; gap: 0.3rem;
+  padding: 0.35rem 0.8rem; border-radius: 20px;
+  font-size: 0.8rem; font-weight: 600; white-space: nowrap;
+}
+.estadoBadge.activa  { background: #E8F5E9; color: #2E7D32; }
+.estadoBadge.pausada { background: #FFF8E1; color: #E65100; }
+.estadoBadge.cancelada { background: #FFEBEE; color: #C62828; }
+.estadoBadge.vendida { background: #E3F2FD; color: #1565C0; }
+
+.cardInfo { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1rem; }
+.infoItem { display: flex; flex-direction: column; gap: 2px; }
+.infoItem span { font-size: 0.75rem; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; }
+.infoItem strong { font-size: 1rem; color: #333; }
+.price { color: var(--color-gold-dark) !important; font-size: 1.1rem !important; }
+
+.cardFooter { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #f0f0f0; }
+.date { font-size: 0.8rem; color: #bbb; }
+.actions { display: flex; gap: 0.5rem; align-items: center; }
+
+.iconBtn {
+  background: #f5f5f5; border: none; border-radius: 8px;
+  padding: 0.5rem; cursor: pointer; display: flex; align-items: center;
+  color: #555; transition: all 0.2s;
+}
+.iconBtn:hover { background: #e8e8e8; color: #222; }
+.iconBtn.danger:hover { background: #FFEBEE; color: #C62828; }
+
+.visibleTag { font-size: 0.82rem; color: #2E7D32; font-weight: 600; }
+
+/* Empty & Loading */
+.empty {
+  text-align: center; padding: 4rem 2rem;
+  background: white; border-radius: 16px;
+  border: 2px dashed #e0e0e0; color: #bbb;
+}
+.empty h3 { color: #888; margin: 1rem 0 0.5rem; }
+.empty p { margin-bottom: 1.5rem; }
+.empty svg { color: #ddd; }
+
+.loadingWrap { text-align: center; padding: 4rem; }
+.spinner {
+  width: 36px; height: 36px; border: 3px solid #f0f0f0;
+  border-top-color: var(--color-brown-dark); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Modal */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 1rem;
+}
+.modal {
+  background: white; border-radius: 20px;
+  width: 100%; max-width: 640px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modalHeader {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem 1.5rem 0;
+}
+.modalHeader h2 { font-size: 1.4rem; color: var(--color-brown-dark); margin: 0; }
+.closeBtn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #999; padding: 0.3rem; }
+
+.form { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.1rem; }
+.formGroup { display: flex; flex-direction: column; gap: 0.4rem; }
+.formGroup label { font-size: 0.85rem; font-weight: 600; color: #555; }
+.formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.input {
+  padding: 0.8rem 1rem; border: 1.5px solid #e0e0e0; border-radius: 10px;
+  font-size: 0.95rem; outline: none; width: 100%; box-sizing: border-box;
+  transition: border-color 0.2s; font-family: inherit;
+}
+.input:focus { border-color: var(--color-brown-dark); }
+textarea.input { resize: vertical; }
+.inputUnit { display: flex; gap: 0.5rem; }
+.inputUnit .input { flex: 1; }
+.unitSelect {
+  padding: 0.8rem 0.6rem; border: 1.5px solid #e0e0e0; border-radius: 10px;
+  font-size: 0.95rem; outline: none; background: white; cursor: pointer;
+}
+.checkRow { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; cursor: pointer; }
+.checkRow input { width: 16px; height: 16px; cursor: pointer; }
+
+.modalActions { display: flex; gap: 1rem; justify-content: flex-end; padding-top: 0.5rem; }
+.cancelBtn {
+  padding: 0.8rem 1.5rem; border: 1.5px solid #ddd; background: white;
+  border-radius: 10px; font-weight: 600; cursor: pointer; color: #777;
+  transition: all 0.2s;
+}
+.cancelBtn:hover { border-color: #bbb; }
+.submitBtn {
+  padding: 0.8rem 1.8rem; background: var(--color-brown-dark); color: white;
+  border: none; border-radius: 10px; font-weight: 600; cursor: pointer;
+  font-size: 0.95rem; transition: opacity 0.2s;
+}
+.submitBtn:hover { opacity: 0.85; }
+
+/* Toast */
+.toast {
+  position: fixed; top: 1.5rem; right: 1.5rem;
+  padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600;
+  z-index: 2000; animation: slideIn 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.toast.success { background: #2E7D32; color: white; }
+.toast.error   { background: #C62828; color: white; }
+@keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ── Bloque de Precio Oficial ─────────────────────────────────────────────── */
+.precioOficialBox {
+  background: linear-gradient(135deg, #FFF8E1 0%, #FFFDE7 100%);
+  border: 2px solid #FFD54F;
+  border-radius: 14px;
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.precioOficialHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #E65100;
+  font-size: 0.95rem;
+}
+
+.precioRangoRow {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: space-around;
+  background: white;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  border: 1px solid #FFE082;
+}
+
+.precioRangoItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.precioRangoItem span { font-size: 0.72rem; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
+.precioRangoItem strong { font-size: 1.05rem; color: #333; font-weight: 700; }
+
+.precioDestacado span { color: #E65100 !important; }
+.precioDestacado strong {
+  font-size: 1.3rem !important;
+  color: #BF360C !important;
+  font-weight: 800 !important;
+}
+
+.precioFuente {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: #999;
+  margin: 0;
+}
+
+.precioNoDisponible {
+  font-size: 0.88rem;
+  color: #bbb;
+  text-align: center;
+  padding: 0.5rem 0;
+  margin: 0;
+}
+
+/* Input con error de rango */
+.inputError {
+  border-color: #C62828 !important;
+  background: #FFF5F5;
+}
+.errorMsg {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: #C62828;
+  margin: 0.2rem 0 0;
+}
+
+/* Botón deshabilitado */
+.submitBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Spinner pequeño */
+.spinnerSmall {
+  width: 14px; height: 14px;
+  border: 2px solid #FFD54F;
+  border-top-color: #E65100;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  display: inline-block;
+}
+
