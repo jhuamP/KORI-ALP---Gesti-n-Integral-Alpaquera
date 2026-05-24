@@ -2,6 +2,7 @@
   "name": "kori-alp",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "npm@10.8.2",
   "description": "Tecnología que nace en los Andes y llega al mundo.",
   "workspaces": [
     "apps/*",
