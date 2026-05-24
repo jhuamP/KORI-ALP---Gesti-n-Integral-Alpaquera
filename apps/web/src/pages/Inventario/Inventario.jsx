@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Plus, Search, Edit2, Trash2, X, ChevronDown,
-  Activity, Weight, Ruler, FileText, CheckCircle, AlertCircle
+  Activity, Weight, Ruler, FileText, CheckCircle, AlertCircle, ShoppingBag
 } from 'lucide-react';
 import { useAuthStore } from '@store/authStore';
 import styles from './Inventario.module.css';
@@ -180,6 +180,62 @@ export default function Inventario() {
     }));
   };
 
+  // ── Publicación Rápida (One-Click) ────────────────────────────────────────
+  const handlePublicarRapido = async (alpaca) => {
+    try {
+      showToast('Generando publicación automática...', 'success');
+      
+      // 1. Determinar subcategoría según calidad
+      const subCatMap = {
+        'BABY_ALPACA': 'Baby Alpaca',
+        'FLEECE': 'Fleece',
+        'MEDIUM_FLEECE': 'Medium Fleece',
+        'HUARIZO': 'Huarizo',
+        'GRUESA': 'Gruesa'
+      };
+      const subCategoria = subCatMap[alpaca.calidadFibra] || 'Fleece';
+      
+      // 2. Obtener precio de referencia oficial
+      const params = new URLSearchParams({ categoria: 'FIBRA', subCategoria, calidadGrado: 'PREMIUM' });
+      const refRes = await fetch(`${API}/mercado/precio-referencia?${params}`);
+      const refData = await refRes.json();
+      
+      if (!refRes.ok || !refData.data) {
+        showToast('No se encontró un precio oficial. Usa "Mis Publicaciones" para hacerlo manual.', 'error');
+        return;
+      }
+
+      const precio = refData.data.precioPromedio;
+
+      // 3. Crear la publicación
+      const payload = {
+        titulo: `Lote de Fibra - Alpaca ${alpaca.arete || 'Sin arete'}`,
+        descripcion: `Lote de fibra de alta calidad. Raza: ${alpaca.raza}. Finura: ${alpaca.micrones || 'N/A'} micrones.`,
+        categoria: 'FIBRA',
+        subCategoria: subCategoria,
+        calidadGrado: 'PREMIUM',
+        cantidad: '5', // Cantidad estimada por esquila
+        unidad: 'kg',
+        precioSolicitado: String(precio),
+        ubicacion: 'Comunidad Productora',
+        aceptaPrecioOficial: true
+      };
+
+      const res = await fetch(`${API}/mercado/publicaciones`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      
+      if (!res.ok) throw new Error(data.error);
+
+      showToast('✅ ¡Lote publicado y en revisión por el Admin!');
+    } catch (err) {
+      showToast(err.message || 'Error al publicar', 'error');
+    }
+  };
+
   // ── RENDER ────────────────────────────────────────────────────────────────
   return (
     <div className={styles.page}>
@@ -350,13 +406,23 @@ export default function Inventario() {
                         <Edit2 size={15} />
                       </button>
                       {alpaca.estado === 'ACTIVO' && (
-                        <button
-                          className={`${styles.iconBtn} ${styles.dangerBtn}`}
-                          onClick={() => handleBaja(alpaca.id, alpaca.arete)}
-                          title="Dar de baja"
-                        >
-                          <Trash2 size={15} />
-                        </button>
+                        <>
+                          <button
+                            className={styles.iconBtn}
+                            style={{ color: '#E65100', background: '#FFF3E0', borderColor: '#FFE0B2' }}
+                            onClick={() => handlePublicarRapido(alpaca)}
+                            title="Vender fibra (Publicación automática)"
+                          >
+                            <ShoppingBag size={15} />
+                          </button>
+                          <button
+                            className={`${styles.iconBtn} ${styles.dangerBtn}`}
+                            onClick={() => handleBaja(alpaca.id, alpaca.arete)}
+                            title="Dar de baja"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </>
                       )}
                     </div>
                   </div>
